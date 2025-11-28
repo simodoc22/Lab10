@@ -16,5 +16,22 @@ class Controller:
         * Numero di Tratte
         * Lista di Tratte che superano il costo indicato come soglia
         """
-        # TODO
+        valore = self._view.guadagno_medio_minimo.value
+        self._model.costruisci_grafo(valore)
+        if type(valore) == str or type(valore) == int:
+            try:
+                valore = int(valore)
+                self._view.lista_visualizzazione.controls.append(ft.Text(self._model.get_num_nodes()))
+                self._view.lista_visualizzazione.controls.append(ft.Text(self._model.get_num_edges()))
+                self._view.update()
+                for i in self._model.get_all_edges():
+                    self._view.lista_visualizzazione.controls.append(ft.text(i))
+                self._view.update()
+
+            except ValueError:
+                self._view.show_alert("attenzione inserire numero e non valore lettarale")
+
+
+
+
 
