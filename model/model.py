@@ -16,20 +16,29 @@ class Model:
         lista_hub = self.Dao.elabora_sql_Hub()
         for hub in lista_hub:
             self.G.add_node(hub.nome)
+        lista = []
         for hub in lista_hub:
             for hub2 in lista_hub:
-                if hub!=hub2:
-                    somma,conto = self.Dao.guadagno_medio_tratta(hub,hub2)
-                    guadagno_medio= somma/conto
-                    if guadagno_medio >= threshold:
-                        self.G.add_edge(hub.nome,hub2.nome, weight = guadagno_medio)
+                if (hub,hub2) not in lista and (hub2,hub) not in lista:
+                    somma,conto=self.Dao.guadagno_medio_tratta(hub,hub2)
+                    lista.append((hub,hub2))
+
+                    if somma==0 or conto == 0:
+                        pass
+                    else:
+                        guadagno_medio= somma/conto
+                        if guadagno_medio >= int(threshold):
+                            self.G.add_edge(hub.nome,hub2.nome, weight = guadagno_medio)
+
+                        else:
+                            pass
 
     def get_num_edges(self):
         """
         Restituisce il numero di Tratte (edges) del grafo
         :return: numero di edges del grafo
         """
-        return self.G.size()
+        return self.G.number_of_edges()
 
     def get_num_nodes(self):
         """
@@ -37,15 +46,8 @@ class Model:
         :return: numero di nodi del grafo
         """
         lista_hub = self.Dao.elabora_sql_Hub()
-        count = 0
-        for i in lista_hub:
-            count+=1
-        return count
+        return len(lista_hub)
 
-    def get_all_edges(self):
-        """
-        Restituisce tutte le Tratte (gli edges) con i corrispondenti pesi
-        :return: gli edges del grafo con gli attributi (il weight)
-        """
+
 
 

@@ -24,8 +24,8 @@ class Controller:
                 self._view.lista_visualizzazione.controls.append(ft.Text(self._model.get_num_nodes()))
                 self._view.lista_visualizzazione.controls.append(ft.Text(self._model.get_num_edges()))
                 self._view.update()
-                for i in self._model.get_all_edges():
-                    self._view.lista_visualizzazione.controls.append(ft.text(i))
+                for u, v, data in self._model.G.edges(data=True):
+                    self._view.lista_visualizzazione.controls.append(ft.Text(f"{u},{v},{data['weight']}"))
                 self._view.update()
 
             except ValueError:
